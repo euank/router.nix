@@ -12,18 +12,21 @@
   boot.kernelParams = [ "copytoram" "console=ttyS0,115200n8" ];
   boot.supportedFilesystems = pkgs.lib.mkForce [ "btrfs" "vfat" "xfs" "ntfs" "cifs" ];
   services.irqbalance.enable = true;
+
   networking.hostName = "rock";
   networking.useNetworkd = false; # one day
   networking.usePredictableInterfaceNames = true;
-  networking.firewall.interfaces.eth0.allowedTCPPorts = [ 22 ];
+  # trust LAN
+  networking.firewall.trustedInterfaces = [ "enp2s0" ];
+  networking.firewall.allowedTCPPorts = [ 22 ];
   security.sudo.wheelNeedsPassword = false;
   services.openssh.enable = true;
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = 1;
     "net.ipv4.conf.default.forwarding" = true;
 
-    "net.ipv6.conf.all.accept_ra" = 2;
-    "net.ipv6.conf.default.accept_ra" = 2;
+    "net.ipv6.conf.all.accept_ra" = 1;
+    "net.ipv6.conf.enp1s0.accept_ra" = 2;
     "net.ipv6.conf.all.forwarding" = true;
     "net.ipv6.conf.default.forwarding" = true;
   };
@@ -93,6 +96,19 @@
     requires = [ "network-online.target" ];
   };
 
+  systemd.services.v6-lan-route = {
+    enable = true;
+    description = "setup some extra v6 rules";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network-online.target" ];
+    requires = [ "network-online.target" ];
+    path = with pkgs; [ iproute2 ];
+    script = ''
+      ip -6 r replace ${inputs.secrets.ipv6_prefix} dev enp2s0 tab 20
+      ip -6 rule add from all tab 20 priority 1000
+    '';
+  };
+
   services.dhcpd4 = {
     enable = true;
     interfaces = [ "enp2s0" ];
@@ -123,6 +139,19 @@
         {
         };
       };
+    '';
+  };
+
+  services.ndppd = {
+    enable = true;
+    configFile = pkgs.writeText "ndppd.conf" ''
+      proxy enp1s0 {
+        router no
+        autowire yes
+        rule ${inputs.secrets.ipv6_addr}/64 {
+          auto
+        }
+      }
     '';
   };
 
