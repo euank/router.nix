@@ -32,6 +32,37 @@
   };
   networking.firewall.checkReversePath = "loose";
 
+  # By default, only allow in ssh traffic to our public IP addresses from the
+  # internet.
+  networking.firewall.extraCommands = ''
+    ip6tables -N forwarding-rules
+    ip6tables -A FORWARD -j forwarding-rules
+
+    # Okay to let traffic out
+    ip6tables -A forwarding-rules -i enp2s0 -o enp1s0 -j ACCEPT
+    # Only let responses back in
+    ip6tables -A forwarding-rules -m state --state RELATED,ESTABLISHED -j ACCEPT
+    # Except for whitelisted ssh ports
+    ip6tables -A forwarding-rules -i enp1s0 -o enp2s0 -p tcp -m tcp --dport 22 -j ACCEPT
+    ip6tables -A forwarding-rules -i enp1s0 -o enp2s0 -p tcp -m tcp --dport 22 -j ACCEPT
+
+    # https://www.rfc-editor.org/rfc/rfc4890#section-4.3.5
+    ip6tables -A forwarding-rules -p ipv6-icmp -m icmp6 --icmpv6-type 138 -j DROP
+    ip6tables -A forwarding-rules -p ipv6-icmp -m icmp6 --icmpv6-type 139 -j DROP
+    ip6tables -A forwarding-rules -p ipv6-icmp -m icmp6 --icmpv6-type 140 -j DROP
+    # And we want the rest of the icmp6 traffic
+    ip6tables -A forwarding-rules -p ipv6-icmp -m icmp6 -j ACCEPT
+
+    # Nothing else
+    ip6tables -A forwarding-rules -j DROP
+  '';
+  networking.firewall.extraStopCommands = ''
+    # Inverse of the above
+    ip6tables -F forwarding-rules
+    ip6tables -D FORWARD -j forwarding-rules
+    ip6tables -X forwarding-rules
+  '';
+
   systemd.services.ngrok-ssh =
     let
       ngrokConfig = pkgs.writeText "conf.yml" ''
