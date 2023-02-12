@@ -51,7 +51,7 @@
     ip6tables -A forwarding-rules -p ipv6-icmp -m icmp6 --icmpv6-type 139 -j DROP
     ip6tables -A forwarding-rules -p ipv6-icmp -m icmp6 --icmpv6-type 140 -j DROP
     # And we want the rest of the icmp6 traffic
-    ip6tables -A forwarding-rules -p ipv6-icmp -m icmp6 -j ACCEPT
+    ip6tables -A forwarding-rules -p ipv6-icmp -j ACCEPT
 
     # Nothing else
     ip6tables -A forwarding-rules -j DROP
