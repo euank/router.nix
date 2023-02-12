@@ -146,11 +146,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1676028411,
-        "narHash": "sha256-8rLAW3FSVFLK0zLeAaK6PaIvt3gpfsZRlWvNhJRVJbA=",
+        "lastModified": 1676221516,
+        "narHash": "sha256-1Jh6gh0R67zT+4AE2sTDgfW5HjeTNbCUJjQ//tjqRs0=",
         "owner": "euank",
         "repo": "v6plus-tun",
-        "rev": "2d35362d6b13c851b31ec8aa3b8b49306bc12536",
+        "rev": "dcbe753fe505e0306bfe0f62bff6417f09c14c8c",
         "type": "github"
       },
       "original": {
