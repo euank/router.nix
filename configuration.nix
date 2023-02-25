@@ -183,7 +183,7 @@
         ttl 3000
         autowire yes
         rule ${inputs.secrets.ipv6_prefix} {
-          auto
+          iface enp2s0
         }
       }
     '';

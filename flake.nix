@@ -2,7 +2,7 @@
   description = "A very basic flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:euank/nixpkgs/ndppd-bump";
     v6plus-tun.url = "github:euank/v6plus-tun";
 
     # Magic unimportable things
