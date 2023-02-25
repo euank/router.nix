@@ -184,6 +184,7 @@
         autowire yes
         rule ${inputs.secrets.ipv6_prefix} {
           iface enp2s0
+          autovia yes
         }
       }
     '';
