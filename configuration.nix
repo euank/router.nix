@@ -161,6 +161,7 @@
       interface enp2s0
       {
         AdvSendAdvert on;
+        MaxRtrAdvInterval 100;
         prefix ${inputs.secrets.ipv6_addr /* TODO: stop hardcoding this, sniff it off dhcp instead */}/64
         {
           AdvOnLink on;
