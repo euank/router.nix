@@ -161,8 +161,8 @@
       interface enp2s0
       {
         AdvSendAdvert on;
-        MaxRtrAdvInterval 100;
-        prefix ${inputs.secrets.ipv6_addr /* TODO: stop hardcoding this, sniff it off dhcp instead */}/64
+        MaxRtrAdvInterval 30;
+        prefix ${inputs.secrets.ipv6_prefix}
         {
           AdvOnLink on;
           AdvAutonomous on;
@@ -177,10 +177,12 @@
   services.ndppd = {
     enable = true;
     configFile = pkgs.writeText "ndppd.conf" ''
+      route-ttl 1000
       proxy enp1s0 {
         router no
+        ttl 3000
         autowire yes
-        rule ${inputs.secrets.ipv6_addr}/64 {
+        rule ${inputs.secrets.ipv6_prefix} {
           auto
         }
       }
