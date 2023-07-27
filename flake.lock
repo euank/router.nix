@@ -121,8 +121,8 @@
     },
     "secrets": {
       "locked": {
-        "lastModified": 1677331219,
-        "narHash": "sha256-BsR7mCwe3hUCGj26FFf5UXiq32s1LZJ8bHOzeOUStPs=",
+        "lastModified": 1690443363,
+        "narHash": "sha256-KQaIpyxtYJSjQGeX6KMzLX34+SP7nqPshGwJHp8TEcI=",
         "path": "/home/esk/dev/router.nix/secrets",
         "type": "path"
       },
@@ -146,11 +146,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1676221516,
-        "narHash": "sha256-1Jh6gh0R67zT+4AE2sTDgfW5HjeTNbCUJjQ//tjqRs0=",
+        "lastModified": 1690453403,
+        "narHash": "sha256-Xvl9RiZ357wiLjHlQVucJFqF8hMsaB9VZvuPNX7Kr7w=",
         "owner": "euank",
         "repo": "v6plus-tun",
-        "rev": "dcbe753fe505e0306bfe0f62bff6417f09c14c8c",
+        "rev": "0caef69444a8a06000c50eb35a088ab107587011",
         "type": "github"
       },
       "original": {

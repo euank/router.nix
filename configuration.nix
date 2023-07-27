@@ -1,4 +1,10 @@
 { config, pkgs, inputs, ... }:
+let
+  # hack: this is a port I happen to know is within my ipv4 map-E range, but in
+  # general this won't necessarily work for another map-E setup. I mean, it'll
+  # work over ipv6, just not ipv4 on other setups.
+  wgPort = 64512;
+in
 {
   imports = [
     "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
@@ -17,8 +23,11 @@
   networking.useNetworkd = false; # one day
   networking.usePredictableInterfaceNames = true;
   # trust LAN
-  networking.firewall.trustedInterfaces = [ "enp2s0" ];
+  networking.firewall.trustedInterfaces = [ "enp2s0" "wg0" ];
   networking.firewall.allowedTCPPorts = [ 22 ];
+  networking.firewall.allowedUDPPorts = [
+    wgPort
+  ];
   security.sudo.wheelNeedsPassword = false;
   services.openssh.enable = true;
   boot.kernel.sysctl = {
@@ -119,7 +128,7 @@
     };
     path = with pkgs; [ iptables iproute2 ];
     serviceConfig = {
-      ExecStart = "${pkgs.v6plus-tun}/bin/v6plus-tun setup-linux --wan enp1s0 ${inputs.secrets.ipv6_addr}"; # TODO: stop hardcoding
+      ExecStart = "${pkgs.v6plus-tun}/bin/v6plus-tun setup-linux --add-ipv4-addr --wan enp1s0 ${inputs.secrets.ipv6_addr}"; # TODO: stop hardcoding
     };
     wantedBy = [ "multi-user.target" ];
     # setup ipv4 after ipv6 is up
@@ -188,6 +197,35 @@
         }
       }
     '';
+  };
+
+  networking.wireguard.interfaces = {
+    wg0 = {
+      # smaller mtu because the ipip tunnel shaves some off the top too
+      mtu = 1380;
+      ips = [ "10.104.0.1/16" ];
+      listenPort = wgPort;
+      postSetup = ''
+        ${pkgs.iptables}/bin/iptables -A FORWARD -i wg0 -o wg0 -j ACCEPT
+        ${pkgs.iptables}/bin/iptables -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+      '';
+      postShutdown = ''
+        ${pkgs.iptables}/bin/iptables -D FORWARD -i wg0 -o wg0 -j ACCEPT
+        ${pkgs.iptables}/bin/iptables -D FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+      '';
+      # pubkey +pLrsgXAn4rH4e+gQWR03n02o2vDNiL1sDOXEYSrmGg=
+      privateKey = inputs.secrets.wireguard.privKey;
+      peers = [
+        {
+          publicKey = "s1P4uQwGt/qxSZotHXmQohdHVCC9voRWtypevBVsu1o=";
+          allowedIPs = [ "10.104.20.0/25" ];
+        }
+        {
+          publicKey = "wvrB4bKlRHj+vxLk6TbzTGjylWesEFrzwzwDvEhTNAI=";
+          allowedIPs = [ "10.104.20.254/32" ];
+        }
+      ];
+    };
   };
 
   time.timeZone = "Asia/Tokyo";
