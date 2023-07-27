@@ -2,7 +2,7 @@
   description = "A very basic flake";
 
   inputs = {
-    nixpkgs.url = "github:euank/nixpkgs/ndppd-debug-2";
+    nixpkgs.url = "github:euank/nixpkgs/ndppd-debug-3";
     v6plus-tun.url = "github:euank/v6plus-tun";
 
     # Magic unimportable things
@@ -24,7 +24,7 @@
     {
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
       nixosConfigurations = {
-        rock = nixpkgs.lib.nixosSystem rec {
+        rock = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           inherit pkgs;
           specialArgs = { inherit inputs; };
