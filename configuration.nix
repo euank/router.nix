@@ -149,19 +149,45 @@ in
     '';
   };
 
-  services.dhcpd4 = {
+  services.kea.dhcp4 = {
     enable = true;
-    interfaces = [ "enp2s0" ];
-    extraConfig = ''
-      option routers 10.57.25.254;
-      option domain-name-servers 8.8.8.8;
-      default-lease-time 600;
-      max-lease-time 7200;
-      authoritative;
-      subnet 10.57.25.0 netmask 255.255.255.0 {
-        range 10.57.25.10 10.57.25.200;
-      }
-    '';
+    settings = {
+      interfaces-config = {
+        interfaces = [ "enp2s0" ];
+      };
+      lease-database = {
+        name = "/var/lib/kea/dhcp4.leases";
+        persist = true;
+        type = "memfile";
+      };
+      valid-lifetime = 7200;
+      subnet4 = [
+        {
+          id = 1;
+          subnet = "10.57.25.0/24";
+          pools = [
+            {
+              pool = "10.57.25.10 - 10.57.25.200";
+            }
+          ];
+          option-data = [
+            {
+              name = "routers";
+              data = "10.57.25.254";
+            }
+            {
+              name = "domain-name-servers";
+              data = "8.8.8.8";
+            }
+          ];
+          reservations =
+            if inputs.secrets ? staticIPs then
+              (
+                pkgs.lib.mapAttrsToList (mac: ip: { hw-address = mac; ip-address = ip; }) inputs.secrets.staticIPs
+              ) else [ ];
+        }
+      ];
+    };
   };
 
   services.radvd = {
