@@ -43,6 +43,19 @@ in
   };
   networking.firewall.checkReversePath = "loose";
 
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    hostName = "router";
+    allowInterfaces = [ "enp2s0" "wg0" ];
+    publish = {
+      enable = true;
+      addresses = true;
+      domain = true;
+      userServices = true;
+    };
+  };
+
   # By default, only allow in ssh traffic to our public IP addresses from the
   # internet.
   networking.firewall.extraCommands = ''
