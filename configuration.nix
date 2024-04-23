@@ -4,6 +4,7 @@ let
   # general this won't necessarily work for another map-E setup. I mean, it'll
   # work over ipv6, just not ipv4 on other setups.
   wgPort = 64512;
+  sshPort = 64513;
 in
 {
   imports = [
@@ -30,6 +31,7 @@ in
   ];
   security.sudo.wheelNeedsPassword = false;
   services.openssh.enable = true;
+  services.openssh.ports = [ 22 sshPort ];
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = 1;
     "net.ipv4.conf.default.forwarding" = true;
@@ -128,7 +130,14 @@ in
     };
     path = with pkgs; [ iptables iproute2 ];
     serviceConfig = {
-      ExecStart = "${pkgs.v6plus-tun}/bin/v6plus-tun setup-linux --add-ipv4-addr --wan enp1s0 ${inputs.secrets.ipv6_addr}"; # TODO: stop hardcoding
+      ExecStart = ''
+        ${pkgs.v6plus-tun}/bin/v6plus-tun setup-linux \
+          --add-ipv4-addr \
+          --no-snat-ipv4-ports ${toString wgPort} \
+          --no-snat-ipv4-ports ${toString sshPort} \
+          --wan enp1s0 \
+          ${inputs.secrets.ipv6_addr}
+        '';
     };
     wantedBy = [ "multi-user.target" ];
     # setup ipv4 after ipv6 is up
