@@ -67,16 +67,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1713852790,
-        "narHash": "sha256-y2GWJVTY6O4s5+wWI0Hke13Gd/L7wkWui7VNGFJfURE=",
+        "lastModified": 1717504074,
+        "narHash": "sha256-n6RZmzOdCjVg27zBQegAvXBilg2MZAQIAhlPYmhN/ts=",
         "owner": "euank",
         "repo": "nixpkgs",
-        "rev": "50f0eb5b9901da2ba0b18eb27aa3fe661105aae9",
+        "rev": "882fc033216977e8faa35af921439b6c536937a8",
         "type": "github"
       },
       "original": {
         "owner": "euank",
-        "ref": "ndppdcmpcpp-2024-04-23",
+        "ref": "ndppdcmpcpp-2024-06-04",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -131,8 +131,8 @@
     },
     "secrets": {
       "locked": {
-        "lastModified": 1713852694,
-        "narHash": "sha256-MgQva8dhBu/mH4+ZAVoHU58jT2Nv7b1tPfHWZpgvz30=",
+        "lastModified": 1717504154,
+        "narHash": "sha256-T4leSuc6XUE2Iq3kqpWOoLanocrLYz1v7zis34N7B+A=",
         "path": "/home/esk/dev/router.nix/secrets",
         "type": "path"
       },
