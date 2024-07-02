@@ -246,7 +246,7 @@ in
       }
     '';
   };
-  systemd.services.ndppd.serviceConfig.Restart = "always";
+  # systemd.services.ndppd.serviceConfig.Restart = "always";
 
   networking.wireguard.interfaces = {
     wg0 = {
