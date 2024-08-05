@@ -24,7 +24,7 @@ in
   networking.useNetworkd = false; # one day
   networking.usePredictableInterfaceNames = true;
   # trust LAN
-  networking.firewall.trustedInterfaces = [ "enp2s0" "wg0" ];
+  networking.firewall.trustedInterfaces = [ "enp2s0" "wg0" "wg1" ];
   networking.firewall.allowedTCPPorts = [ 22 ];
   networking.firewall.allowedUDPPorts = [
     wgPort
@@ -47,7 +47,7 @@ in
     enable = true;
     nssmdns4 = true;
     hostName = "router";
-    allowInterfaces = [ "enp2s0" "wg0" ];
+    allowInterfaces = [ "enp2s0" "wg0" "wg1" ];
     publish = {
       enable = true;
       addresses = true;
@@ -281,6 +281,35 @@ in
         {
           publicKey = "wvrB4bKlRHj+vxLk6TbzTGjylWesEFrzwzwDvEhTNAI=";
           allowedIPs = [ "10.104.20.254/32" ];
+        }
+      ];
+    };
+
+    # Used for some stuff
+    wg1 = {
+      ips = [ "10.101.107.2/24" ];
+      privateKey = inputs.secrets.wireguard.privKey;
+      allowedIPsAsRoutes = false;
+
+      # Something like the following will vpn a single device
+      #
+      #     ip rule add from <internal-ip> lookup 24
+      #
+      # Be aware of ipv6 of course
+      postSetup = ''
+        ${pkgs.iproute2}/bin/ip route add default dev wg1 tab 24 || true
+        ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -o wg1 -j MASQUERADE || true
+      '';
+      postShutdown = ''
+        ${pkgs.iproute2}/bin/ip route del default dev wg1 tab 24 || true
+        ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -o wg1 -j MASQUERADE || true
+      '';
+      peers = [
+        {
+          publicKey = "fHDk+22yah18ytcDFl97kVucKkdhvW3Ykx9qX2DdxUU=";
+          allowedIPs = [ "0.0.0.0/0" ];
+          endpoint = inputs.secrets.wireguard.wg1Endpoint;
+          persistentKeepalive = 25;
         }
       ];
     };
