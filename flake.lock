@@ -131,8 +131,8 @@
     },
     "secrets": {
       "locked": {
-        "lastModified": 1717504205,
-        "narHash": "sha256-fXAsPaXfevbqpuZgN4EEzDfX+bzCY/+5NHIe1GCUTAY=",
+        "lastModified": 1717504154,
+        "narHash": "sha256-T4leSuc6XUE2Iq3kqpWOoLanocrLYz1v7zis34N7B+A=",
         "path": "/home/esk/dev/router.nix/secrets",
         "type": "path"
       },
