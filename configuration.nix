@@ -108,8 +108,9 @@ in
     };
 
   environment.systemPackages = with pkgs; [
-    htop
     curl
+    git
+    htop
   ];
 
   networking = {
