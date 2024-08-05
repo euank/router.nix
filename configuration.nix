@@ -168,7 +168,9 @@ in
     path = with pkgs; [ iproute2 ];
     script = ''
       ip -6 r replace ${inputs.secrets.ipv6_prefix} dev enp2s0 tab 20
-      ip -6 rule add from all tab 20 priority 1000
+      if [[ "$(ip -6 rule list tab 20 priority 1000)" == "" ]]; then
+        ip -6 rule add from all tab 20 priority 1000
+      fi
     '';
   };
 
@@ -297,4 +299,7 @@ in
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCKqFuQdr7H2xwTM1p/CEbFvZ7oVPX1fjwYkJOv50O70a+NXaAs9Eg5Cnyhs0pKLwogMp3AZsdkVPyUtZIuShFw/e7DAz6Eo4kdXoU8oMhYqWEAFfTF+m/uCWoesPQK+6XQute7DkqR+0A+tgc7dNM9TYZyXdNNl/corxchGH+K0S+ENdcM8j4qllBxJE6GtlFQgMzN3URW2g6lTTGD8HoICl+ajfuLGBsg7O8UZHM9qsLC0K4Ej23FF9GIMEYlnSentVZo4o1hj/xTzsiKhl1EFvP8oo22vYkebQRX0XhrNCehouQYrmM0fSS7+m9UjQK9jWaXBZ+Z5r/ppoJzQ80p"
     ];
   };
+
+  nix.settings.trusted-users = [ "root" "esk" ];
+
 }
