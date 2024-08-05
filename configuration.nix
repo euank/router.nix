@@ -247,7 +247,13 @@ in
       }
     '';
   };
-  # systemd.services.ndppd.serviceConfig.Restart = "always";
+  # Try waiting for both devices to be ready before proxying stuff
+  systemd.services.ndppd.serviceConfig.After = [
+    "network-addresses-enp1s0.service"
+    "network-addresses-enp2s0.service"
+  ];
+  systemd.services.ndppd.serviceConfig.Restart = "always";
+  systemd.services.ndppd.serviceConfig.RestartSec = 10;
 
   networking.wireguard.interfaces = {
     wg0 = {
