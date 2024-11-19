@@ -211,6 +211,10 @@ in
               name = "domain-name-servers";
               data = "8.8.8.8";
             }
+            {
+              name = "interface-mtu";
+              data = "1460";
+            }
           ];
           reservations =
             if inputs.secrets ? staticIPs then
