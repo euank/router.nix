@@ -151,11 +151,16 @@ in
           --no-snat-ipv4-ports ${toString sshPort} \
           --wan enp1s0 \
           ${inputs.secrets.ipv6_addr}
-        '';
+      '';
+      Restart = "always";
+      RestartSec = 10;
     };
     wantedBy = [ "multi-user.target" ];
-    # setup ipv4 after ipv6 is up
-    after = [ "network-online.target" ];
+    after = [
+      "network-online.target"
+      "network-addresses-enp1s0.service"
+      "network-addresses-enp2s0.service"
+    ];
     requires = [ "network-online.target" ];
   };
 
