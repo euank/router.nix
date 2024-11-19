@@ -1,8 +1,8 @@
 {
-  description = "A very basic flake";
+  description = "My router";
 
   inputs = {
-    nixpkgs.url = "github:euank/nixpkgs/ndppdcmpcpp-2024-07-02";
+    nixpkgs.url = "github:euank/nixpkgs/ndppdcmpcpp-2024-11-19";
     v6plus-tun.url = "github:euank/v6plus-tun";
 
     # Magic unimportable things
