@@ -225,6 +225,10 @@ in
       ];
     };
   };
+  systemd.services.kea-dhcp4-server.serviceConfig = {
+    After = [ "v4-plus.service" ];
+    Requires = [ "v4-plus.service" ];
+  };
 
   services.radvd = {
     enable = true;
