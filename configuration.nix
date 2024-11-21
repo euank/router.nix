@@ -154,7 +154,7 @@ in
           --wan enp1s0 \
           ${inputs.secrets.ipv6_addr}
       '';
-      Restart = "always";
+      Restart = "on-failure";
       RestartSec = 10;
     };
     wantedBy = [ "multi-user.target" ];
