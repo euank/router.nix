@@ -15,6 +15,8 @@ in
     "${inputs.nixpkgs-ndppd}/nixos/modules/services/networking/ndppd.nix"
   ];
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   # Poached from https://dataswamp.org/~solene/2022-08-03-nixos-with-live-usb-router.html
   # Thank you!
   isoImage.squashfsCompression = "zstd -Xcompression-level 5";
