@@ -191,6 +191,8 @@ in
     settings = {
       interfaces-config = {
         interfaces = [ "enp2s0" ];
+        # crashloop to victory if we race
+        service-sockets-require-all = true;
       };
       lease-database = {
         name = "/var/lib/kea/dhcp4.leases";
@@ -226,9 +228,13 @@ in
       ];
     };
   };
-  systemd.services.kea-dhcp4-server.serviceConfig = {
-    After = [ "v4-plus.service" ];
-    Requires = [ "v4-plus.service" ];
+  systemd.services.kea-dhcp4-server = {
+    after = [ "v4-plus.service" ];
+    wants = [ "v4-plus.service" ];
+    serviceConfig = {
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
   };
 
   services.radvd = {
