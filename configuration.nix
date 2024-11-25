@@ -116,6 +116,8 @@ in
     curl
     git
     htop
+    ethtool
+    vim
   ];
 
   networking = {
@@ -126,8 +128,6 @@ in
     # LAN
     interfaces.enp2s0 = {
       useDHCP = false;
-      # lower MTU to match the v4 tunnel
-      mtu = 1460;
       ipv4.addresses = [{
         address = "10.57.25.254";
         prefixLength = 24;
