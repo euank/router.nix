@@ -2,7 +2,8 @@
   description = "My router";
 
   inputs = {
-    nixpkgs.url = "github:euank/nixpkgs/ndppdcmpcpp-2024-11-19";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-ndppd.url = "github:euank/nixpkgs/ndppdcmpcpp-2024-11-19";
     v6plus-tun.url = "github:euank/v6plus-tun";
 
     # Magic unimportable things
@@ -17,6 +18,7 @@
         overlays = [
           (prev: final: {
             v6plus-tun = inputs.v6plus-tun.packages.${system}.default;
+            ndppd = inputs.nixpkgs-ndppd.legacyPackages.x86_64-linux.ndppd;
           })
         ];
       };

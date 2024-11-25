@@ -7,9 +7,12 @@ let
   sshPort = 64513;
 in
 {
+  disabledModules = [ "services/networking/ndppd.nix" ];
   imports = [
     "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
     "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
+
+    "${inputs.nixpkgs-ndppd}/nixos/modules/services/networking/ndppd.nix"
   ];
 
   # Poached from https://dataswamp.org/~solene/2022-08-03-nixos-with-live-usb-router.html
