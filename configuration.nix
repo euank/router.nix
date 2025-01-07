@@ -69,8 +69,7 @@ in
   # internet.
   networking.firewall.extraCommands = ''
     # Handle a special whitelisted port
-    iptables -t nat -A PREROUTING -i enp1s0 -p udp --dport ${toString kPort1} -j DNAT --to-destination 10.57.25.18:${toString kPort1}
-    ip6tables -t nat -A PREROUTING -i enp1s0 -p udp --dport ${toString kPort2} -j DNAT --to-destination 10.57.25.18:${toString kPort2}
+    iptables -t nat -A PREROUTING -i ip4tun0 -p udp --dport ${toString kPort1} -j DNAT --to-destination 10.57.25.18:${toString kPort1}
 
     ip6tables -N forwarding-rules
     ip6tables -A FORWARD -j forwarding-rules

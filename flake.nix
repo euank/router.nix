@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-ndppd.url = "github:euank/nixpkgs/ndppdcmpcpp-2024-11-19";
-    v6plus-tun.url = "github:euank/v6plus-tun";
+    v6plus-tun.url = "github:euank/v6plus-tun/main";
 
     # Magic unimportable things
     secrets.url = "path:/home/esk/dev/router.nix/secrets";
