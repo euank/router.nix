@@ -118,10 +118,8 @@ in
     {
       enable = true;
       description = "ngrok ssh";
-      unitConfig = {
-        Type = "simple";
-      };
       serviceConfig = {
+        Type = "simple";
         ExecStart = "${pkgs.ngrok}/bin/ngrok tcp --log=stdout --log-level=info --config=${ngrokConfig} --region=jp --remote-addr=1.tcp.jp.ngrok.io:20603 22";
       };
       wantedBy = [ "multi-user.target" ];
@@ -161,11 +159,9 @@ in
   systemd.services.v4-plus = {
     enable = true;
     description = "setup v4 tunnel";
-    unitConfig = {
-      Type = "simple";
-    };
     path = with pkgs; [ iptables iproute2 ];
     serviceConfig = {
+      Type = "simple";
       ExecStart = ''
         ${pkgs.v6plus-tun}/bin/v6plus-tun setup-linux \
           --add-ipv4-addr \
