@@ -7,6 +7,8 @@ let
   sshPort = 64513;
   kPort1 = 64514;
   kPort2 = 64515;
+  kPort1' = 64516;
+  kPort2' = 64517;
 in
 {
   disabledModules = [ "services/networking/ndppd.nix" ];
@@ -35,8 +37,8 @@ in
   networking.firewall.allowedTCPPorts = [ 22 ];
   networking.firewall.allowedUDPPorts = [
     wgPort
-    kPort1
-    kPort2
+    kPort1 kPort1'
+    kPort2 kPort2'
   ];
   security.sudo.wheelNeedsPassword = false;
   services.openssh.enable = true;
@@ -70,6 +72,7 @@ in
   networking.firewall.extraCommands = ''
     # Handle a special whitelisted port
     iptables -t nat -A PREROUTING -i ip4tun0 -p udp --dport ${toString kPort1} -j DNAT --to-destination 10.57.25.18:${toString kPort1}
+    iptables -t nat -A PREROUTING -i ip4tun0 -p udp --dport ${toString kPort1'} -j DNAT --to-destination 10.57.25.25:${toString kPort1'}
 
     ip6tables -N forwarding-rules
     ip6tables -A FORWARD -j forwarding-rules
@@ -99,7 +102,9 @@ in
     ip6tables -X forwarding-rules
 
     iptables -t nat -D PREROUTING -i enp1s0 -p udp --dport ${toString kPort1} -j DNAT --to-destination 10.57.25.18:${toString kPort1}
+    iptables -t nat -D PREROUTING -i enp1s0 -p udp --dport ${toString kPort1'} -j DNAT --to-destination 10.57.25.25:${toString kPort1'}
     ip6tables -t nat -D PREROUTING -i enp1s0 -p udp --dport ${toString kPort2} -j DNAT --to-destination 10.57.25.18:${toString kPort2}
+    ip6tables -t nat -D PREROUTING -i enp1s0 -p udp --dport ${toString kPort2'} -j DNAT --to-destination 10.57.25.25:${toString kPort2'}
   '';
 
   systemd.services.ngrok-ssh =
@@ -167,7 +172,9 @@ in
           --no-snat-ipv4-ports ${toString wgPort} \
           --no-snat-ipv4-ports ${toString sshPort} \
           --no-snat-ipv4-ports ${toString kPort1} \
+          --no-snat-ipv4-ports ${toString kPort1'} \
           --no-snat-ipv4-ports ${toString kPort2} \
+          --no-snat-ipv4-ports ${toString kPort2'} \
           --wan enp1s0 \
           ${inputs.secrets.ipv6_addr}
       '';
