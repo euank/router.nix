@@ -319,6 +319,10 @@ in
           publicKey = "wvrB4bKlRHj+vxLk6TbzTGjylWesEFrzwzwDvEhTNAI=";
           allowedIPs = [ "10.104.20.254/32" ];
         }
+        {
+          publicKey = "BWP17DD9Zz0fnYvfrST+xVVYvaPXWV3+NyMZ1YfNaz0=";
+          allowedIPs = [ "10.104.21.0/25" ];
+        }
       ];
     };
 
