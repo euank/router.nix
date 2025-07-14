@@ -323,6 +323,22 @@ in
           publicKey = "BWP17DD9Zz0fnYvfrST+xVVYvaPXWV3+NyMZ1YfNaz0=";
           allowedIPs = [ "10.104.21.0/25" ];
         }
+        {
+          publicKey = "b5CRCCnpyMwdNlAR3hvJLEPxKyHM0xU+5krClAyL7jY=";
+          allowedIPs = [ "10.104.6.1/32" ];
+        }
+        {
+          publicKey = "TMRycR9pgXCfULdvZSTLR8yolv4CD1pOU9clAg3MazM=";
+          allowedIPs = [ "10.104.6.2/32" ];
+        }
+        {
+          publicKey = "J7IqhF9tx8fbOp1LkPuhowbVgt0zm0GCp05gH9HCJR4=";
+          allowedIPs = [ "10.104.6.3/32" ];
+        }
+        {
+          publicKey = "6BVb0BUb5kBP5SOmxGRO36iZnnRZpsc+q2+EMNorFV8=";
+          allowedIPs = [ "10.104.6.4/32" ];
+        }
       ];
     };
 
