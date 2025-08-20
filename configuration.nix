@@ -25,7 +25,7 @@ in
   # Thank you!
   isoImage.squashfsCompression = "zstd -Xcompression-level 5";
   powerManagement.cpuFreqGovernor = "ondemand";
-  boot.kernelParams = [ "copytoram" "console=ttyS0,115200n8" ];
+  boot.kernelParams = [ "console=ttyS0,115200n8" ];
   boot.supportedFilesystems = pkgs.lib.mkForce [ "btrfs" "vfat" "xfs" "ntfs" "cifs" ];
   services.irqbalance.enable = true;
 
