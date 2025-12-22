@@ -67,11 +67,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1753939845,
-        "narHash": "sha256-K2ViRJfdVGE8tpJejs8Qpvvejks1+A4GQej/lBk5y7I=",
+        "lastModified": 1766309749,
+        "narHash": "sha256-3xY8CZ4rSnQ0NqGhMKAy5vgC+2IVK0NoVEzDoOh4DA4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "94def634a20494ee057c76998843c015909d6311",
+        "rev": "a6531044f6d0bef691ea18d4d4ce44d0daa6e816",
         "type": "github"
       },
       "original": {
@@ -144,8 +144,8 @@
     },
     "secrets": {
       "locked": {
-        "lastModified": 1754123894,
-        "narHash": "sha256-7HCmdgCSgrgmLJH/8EpQGKvafDk3X1WVViBv/jzjGo0=",
+        "lastModified": 1766422255,
+        "narHash": "sha256-g0BsQJh9pp+aMbqD0powZoEMK7vEI9VFOHQ7tZJJO8s=",
         "path": "/home/esk/dev/router.nix/secrets",
         "type": "path"
       },
