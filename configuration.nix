@@ -298,7 +298,10 @@ in
     wg0 = {
       # smaller mtu because the ipip tunnel shaves some off the top too
       mtu = 1380;
-      ips = [ "10.104.0.1/16" ];
+      ips = [
+        "10.104.0.1/16"
+        "10.110.255.254/16"
+      ];
       listenPort = wgPort;
       postSetup = ''
         ${pkgs.iptables}/bin/iptables -A FORWARD -i wg0 -o wg0 -j ACCEPT
@@ -317,11 +320,11 @@ in
         }
         {
           publicKey = "wvrB4bKlRHj+vxLk6TbzTGjylWesEFrzwzwDvEhTNAI=";
-          allowedIPs = [ "10.104.20.254/32" ];
+          allowedIPs = [ "10.110.255.253/32" ];
         }
         {
           publicKey = "BWP17DD9Zz0fnYvfrST+xVVYvaPXWV3+NyMZ1YfNaz0=";
-          allowedIPs = [ "10.104.21.0/25" ];
+          allowedIPs = [ "10.110.0.0/16" ];
         }
         {
           publicKey = "b5CRCCnpyMwdNlAR3hvJLEPxKyHM0xU+5krClAyL7jY=";
